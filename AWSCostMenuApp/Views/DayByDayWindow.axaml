@@ -1,0 +1,57 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AWSCostMenuApp.ViewModels"
+        xmlns:viewModels="clr-namespace:AWSCostMenuApp.ViewModels"
+        xmlns:viewModels1="clr-namespace:AWSCostMenuApp.ViewModels"
+        x:Class="AWSCostMenuApp.Views.DayByDayWindow"
+        Title="AWS Cost Monitor - Day-by-Day Comparison"
+        Width="700" Height="700"
+        WindowStartupLocation="CenterScreen">
+    
+    <Design.DataContext>
+        <viewModels1:DayByDayViewModel />
+    </Design.DataContext>
+    
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="20,20,20,10">
+            <TextBlock Text="Day-by-Day Comparison" Classes="header" FontSize="24" />
+            <TextBlock Text="This Month vs Last Month" Classes="subheader" />
+            <TextBlock Text="{Binding CreditsStatus}" Foreground="{Binding CreditsStatusColor}" />
+        </StackPanel>
+        
+        <!-- Data Grid -->
+        <DataGrid Grid.Row="1" Margin="20,10" 
+                  ItemsSource="{Binding Days}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserResizeColumns="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Day" Binding="{Binding Day}" Width="60" />
+                <DataGridTextColumn Header="This Month" Binding="{Binding ThisMonth, StringFormat=\{0:C2\}}" Width="150" CellStyleClasses="rightAlign" />
+                <DataGridTextColumn Header="Last Month" Binding="{Binding LastMonth, StringFormat=\{0:C2\}}" Width="150" CellStyleClasses="rightAlign" />
+                <DataGridTextColumn Header="Difference" Binding="{Binding Difference}" Width="150" CellStyleClasses="rightAlign" />
+                <DataGridTextColumn Header="% Change" Binding="{Binding PercentChange}" Width="150" CellStyleClasses="rightAlign" />
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <!-- Footer with totals -->
+        <Border Grid.Row="2" Background="#F5F5F5" Padding="20,10">
+            <Grid ColumnDefinitions="*,*,*">
+                <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                    <TextBlock Text="This Month Total" Classes="subheader" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding ThisMonthTotal}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBlock Text="Last Month Total" Classes="subheader" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding LastMonthTotal}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                    <TextBlock Text="Difference" Classes="subheader" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding TotalDifference}" FontSize="20" FontWeight="Bold" 
+                               Foreground="{Binding TotalDifferenceColor}" HorizontalAlignment="Center" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

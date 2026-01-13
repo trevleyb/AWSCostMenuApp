@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+        <LSUIElement>true</LSUIElement>
+    </PropertyGroup>
+    
+    <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+        <None Update="Info.plist">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    
+    <PropertyGroup>
+        <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- macOS specific -->
+        <RuntimeIdentifiers>osx-x64;osx-arm64;win-x64;linux-x64</RuntimeIdentifiers>
+        <CFBundleName>AWS Cost Monitor</CFBundleName>
+        <CFBundleDisplayName>AWS Cost Monitor</CFBundleDisplayName>
+        <CFBundleIdentifier>com.awscostdashboard.menubar</CFBundleIdentifier>
+        <CFBundleVersion>1.0.0</CFBundleVersion>
+        <CFBundleShortVersionString>1.0</CFBundleShortVersionString>
+        <NSHighResolutionCapable>true</NSHighResolutionCapable>
+        <LSUIElement>true</LSUIElement> <!-- This makes it a menu bar only app (no dock icon) -->
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.2.1"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.1"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1"/>
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.1" />
+
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.1"/>
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.2.1" Condition="'$(Configuration)' == 'Debug'"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2"/>
+        <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10"/>
+        <PackageReference Include="AWSSDK.CostExplorer" Version="3.7.400.1"/>
+        <PackageReference Include="AWSSDK.Organizations" Version="3.7.400" />
+        <PackageReference Include="AWSSDK.SSO" Version="3.7.400" />
+        <PackageReference Include="AWSSDK.SSOOIDC" Version="3.7.400" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="Spectre.Console" Version="0.49.1" />
+
+    </ItemGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="publish\" />
+    </ItemGroup>
+</Project>

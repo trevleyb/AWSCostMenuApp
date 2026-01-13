@@ -1,0 +1,53 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AWSCostMenuApp.ViewModels"
+        xmlns:viewModels="clr-namespace:AWSCostMenuApp.ViewModels"
+        xmlns:viewModels1="clr-namespace:AWSCostMenuApp.ViewModels"
+        x:Class="AWSCostMenuApp.Views.AccountSummaryWindow"
+        Title="AWS Cost Monitor - Account Summary"
+        Width="1200" Height="700"
+        WindowStartupLocation="CenterScreen">
+    
+    <Design.DataContext>
+        <viewModels1:SummaryViewModel />
+    </Design.DataContext>
+    
+    <Grid RowDefinitions="Auto,*,Auto" Background="AliceBlue">
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="20,20,20,10">
+            <TextBlock Text="Account dddd Summary" Classes="header" FontSize="24" />
+            <TextBlock Text="{Binding DateRangeInfo}" Classes="subheader" />
+            <TextBlock Text="{Binding CreditsStatus}" Foreground="{Binding CreditsStatusColor}" />
+        </StackPanel>
+        
+        <!-- Data Grid -->
+        <DataGrid Grid.Row="1" Margin="20,10" 
+                  ItemsSource="{Binding Items}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserResizeColumns="True"
+                  CanUserSortColumns="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Account" Binding="{Binding Name}" Width="250" />
+                <DataGridTextColumn Header="MTD" Binding="{Binding MtdCost, StringFormat=\{0:C2\}}" Width="120" CellStyleClasses="rightAlign" />
+                <DataGridTextColumn Header="Last MTD" Binding="{Binding LastMtdCost, StringFormat=\{0:C2\}}" Width="120" CellStyleClasses="rightAlign" />
+                <DataGridTextColumn Header="Diff %" Binding="{Binding MtdDiffPercent}" Width="100" CellStyleClasses="rightAlign" />
+                <DataGridTextColumn Header="" Binding="{Binding MtdDirection}" Width="30" />
+                <DataGridTextColumn Header="Rolling 30d" Binding="{Binding Rolling30Cost, StringFormat=\{0:C2\}}" Width="120" CellStyleClasses="rightAlign" />
+                <DataGridTextColumn Header="Prev 30d" Binding="{Binding Prev30Cost, StringFormat=\{0:C2\}}" Width="120" CellStyleClasses="rightAlign" />
+                <DataGridTextColumn Header="Diff %" Binding="{Binding FullDiffPercent}" Width="100" CellStyleClasses="rightAlign" />
+                <DataGridTextColumn Header="" Binding="{Binding FullDirection}" Width="30" />
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <!-- Footer with totals -->
+        <Border Grid.Row="2" Background="#F5F5F5" Padding="20,10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Total MTD: " FontWeight="SemiBold" />
+                <TextBlock Text="{Binding TotalMtd}" FontWeight="Bold" Margin="0,0,30,0" />
+                <TextBlock Text="Total Rolling 30d: " FontWeight="SemiBold" />
+                <TextBlock Text="{Binding TotalRolling30}" FontWeight="Bold" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
